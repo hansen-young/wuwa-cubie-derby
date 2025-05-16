@@ -2,14 +2,24 @@ from __future__ import annotations
 import random
 import pickle
 
+from tqdm import tqdm
+
 
 class Cube:
-    def __init__(self):
+    def __init__(self, offset: int = 0, track_length: int = 20):
         self.name = self.__class__.__name__
+        self.steps: int = 0
         self.position: int = 0
+        self.offset: int = offset
+        self.track_length: int = track_length
+
+    def forward(self, steps: int):
+        self.steps += steps
+        self.position = (self.position + steps) % self.track_length
 
     def reset(self):
-        self.position = 0
+        self.steps = 0
+        self.position = self.offset % self.track_length
 
     def roll(self) -> int:
         """ Base roll value of cube before any skill is triggered """
@@ -23,7 +33,7 @@ class Cube:
         """ Trigger: Before current cube moves """
         return steps
 
-    def post_move(self, cube: Cube, steps: int,  move_orders: list[Cube], positions: list[list[Cube]]):
+    def after_move(self, cube: Cube, steps: int,  move_orders: list[Cube], positions: list[list[Cube]]):
         """ Trigger: After each cube moves """
         pass
 
@@ -75,18 +85,14 @@ class Cantarella(Cube):
     and carries them forward. This can only be triggered once per match.
     """
 
-    def __init__(self):
-        super().__init__()
-        self.skill_triggered = False
-
     def reset(self):
         super().reset()
         self.skill_triggered = False
 
-    def post_move(self, cube, steps, move_orders, positions):
+    def after_move(self, cube, steps, move_orders, positions):
         carry_forward: list[Cube] = []
 
-        if cube == self:
+        if cube == self and not self.skill_triggered:
             for i in range(steps):
                 pi = self.position - i - 1
 
@@ -96,7 +102,8 @@ class Cantarella(Cube):
                     positions[pi].clear()
                 
             for c in carry_forward:
-                c.position = self.position
+                c_steps = (self.position - c.position) % len(positions)
+                c.forward(c_steps)
             
             self_posidx = positions[self.position].index(self)
             carry_forward += positions[self.position][self_posidx:]
@@ -122,10 +129,6 @@ class Cartethyia(Cube):
     match.
     """
 
-    def __init__(self):
-        super().__init__()
-        self.skill_triggered = False
-
     def reset(self):
         super().reset()
         self.skill_triggered = False
@@ -135,7 +138,7 @@ class Cartethyia(Cube):
             steps += 2
         return steps
     
-    def post_move(self, cube, steps, move_orders, positions):
+    def after_move(self, cube, steps, move_orders, positions):
         ranks = compute_ranks(move_orders, positions)
 
         if cube == self and ranks[-1][2] == self and random.random() <= 0.6:
@@ -162,7 +165,7 @@ class Jinhsi(Cube):
     top of the stack.
     """
 
-    def post_move(self, cube, steps, move_orders, positions):
+    def after_move(self, cube, steps, move_orders, positions):
         if cube.position == self.position and random.random() <= 0.4:
             positions[self.position].remove(self)
             positions[self.position].append(self)
@@ -206,10 +209,6 @@ class Zani(Cube):
     above, there is a 40% chance to advance 2 extra pads next turn.
     """
 
-    def __init__(self):
-        super().__init__()
-        self.trigger_skill = False
-
     def reset(self):
         super().reset()
         self.trigger_skill = False
@@ -223,54 +222,67 @@ class Zani(Cube):
             self.trigger_skill = False
         return steps
     
-    def post_move(self, cube, steps, move_orders, positions):
+    def after_move(self, cube, steps, move_orders, positions):
         if self == cube and positions[cube.position][-1] != self and random.random() <= 0.4:
             self.trigger_skill = True
 
+
+
 class Game:
-    def __init__(self, cubes: list[Cube]):
+    def __init__(self, cubes: list[Cube], track_length: int = 20):
         self.cubes: list[Cube] = cubes
         self.positions: list[list[Cube]] = []
+        self.track_length: int = track_length
         self.winner: Cube | None = None
+
+    # --- Utilities --- #
+
+    def show_positions(self):
+        for i, position in enumerate(self.positions):
+            print(f"Pad {i:<2}: ", end="")
+            for c in position:
+                print(c.name, end=" ")
+            print()
+
+
+    # --- Game Logic --- #
 
     def shuffle_move_orders(self):
         random.shuffle(self.cubes)
     
-    def initialize_state(self, track_length: int = 20):
-        """
-        At turn 1, the move is ordered based on the reversed cube stack.
-        """
+    def initialize_state(self):
         self.winner = None
-        self.shuffle_move_orders()
-        self.positions = [[] for _ in range(track_length)]
-        self.positions[0] = [c for c in self.cubes[::-1]]
+        self.positions = [[] for _ in range(self.track_length)]
 
         for c in self.cubes:
+            c.track_length = self.track_length
             c.reset()
+            self.positions[c.position].append(c)
 
     def check_winner(self):
         """
         If multiple cubes finished at the same time, the cube on the top of the stack wins.
         """
-        if self.positions[-1]:
-            self.winner = self.positions[-1][-1]
+        for cube in self.positions[0][::-1]:
+            if cube.steps + cube.offset >= self.track_length:
+                self.winner = cube
+                break
 
     def move(self, cube: Cube, steps: int):
         cube_idx = self.positions[cube.position].index(cube)
         cubes_to_move = self.positions[cube.position][cube_idx:]
         cubes_remaining = self.positions[cube.position][:cube_idx]
-
-        final_pad = len(self.positions) - 1
-        destination = max(final_pad, cube.position + steps)
+        destination = min(self.track_length, cube.position + steps) % self.track_length
 
         self.positions[destination] += cubes_to_move
         self.positions[cube.position] = cubes_remaining
 
         for c in cubes_to_move:
-            c.position = destination
+            c_steps = (destination - c.position) % self.track_length
+            c.forward(c_steps)
 
-    def start(self, track_length: int = 20):
-        self.initialize_state(track_length)
+    def start(self):
+        self.initialize_state()
 
         while self.winner is None:
             self.shuffle_move_orders()
@@ -284,14 +296,15 @@ class Game:
                 self.move(c, steps)
 
                 for cx in self.cubes:
-                    cx.post_move(c, steps, self.cubes, self.positions)
+                    cx.after_move(c, steps, self.cubes, self.positions)
 
                 self.check_winner()
 
                 if self.winner:
                     break
-        
+
         return compute_ranks(self.cubes, self.positions)
+
 
 def compute_ranks(cubes: list[Cube], positions: list[list[Cube]]):
     ranks: list[tuple[int, int, Cube]] = []
@@ -304,7 +317,10 @@ def compute_ranks(cubes: list[Cube], positions: list[list[Cube]]):
 
 
 if __name__ == "__main__":
-    track_length = 20
+
+    # --- Match Configuration --- #
+
+    track_length = 24
 
     # match_name = "group_a_gs1"
     # cubes: list[Cube] = [Calcharo(), Camellya(), Carlotta(), Changli(), Jinhsi(), Shorekeeper()]
@@ -315,15 +331,17 @@ if __name__ == "__main__":
     match_name = "group_b_gs1"
     cubes: list[Cube] = [Brant(), Cantarella(), Cartethyia(), Phoebe(), Roccia(), Zani()]
 
-    game = Game(cubes)
+    # --- Game Simulation --- #
+
+    game = Game(cubes, track_length)
     win_counts = {c: 0 for c in cubes}
     sum_ranks = {c: 0 for c in cubes}
     rank_history = {c.name: [] for c in cubes}
 
-    num_rounds = 5000000
+    num_rounds = 100000
 
-    for _ in range(num_rounds):
-        ranks = game.start(track_length)
+    for _ in tqdm(range(num_rounds)):
+        ranks = game.start()
 
         winner = ranks[0][-1]
         win_counts[winner] += 1
