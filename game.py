@@ -172,7 +172,21 @@ if __name__ == "__main__":
             start_move_order=None,
             track_length=24,
             num_simulations=1000000
-        )
+        ),
+        MatchSetup(
+            match_name="group_a_qf1_w_order",
+            start_position=[Calcharo(), Changli(), Shorekeeper(), Camellya()],
+            start_move_order=[3, 1, 2, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_a_qf2",
+            start_position=[Calcharo(0), Changli(-1), Shorekeeper(-1), Camellya(-2)],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=1000000
+        ),
     ]
 
     # --- Game Simulation --- #
