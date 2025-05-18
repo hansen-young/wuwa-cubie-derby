@@ -139,6 +139,13 @@ if __name__ == "__main__":
             num_simulations=500000
         ),
         MatchSetup(
+            match_name="group_a_gs2_w_order",
+            start_position=[Jinhsi(0), Carlotta(-1), Calcharo(-1), Shorekeeper(-2), Camellya(-2), Changli(-3)],
+            start_move_order=[5, 1, 0, 2, 3, 4],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
             match_name="group_b_gs1",
             start_position=[Cantarella(), Roccia(), Zani(), Cartethyia(), Phoebe(), Brant()],
             start_move_order=[5, 4, 3, 2, 1, 0],
@@ -151,6 +158,20 @@ if __name__ == "__main__":
             start_move_order=None,
             track_length=24,
             num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_b_gs2_w_order",
+            start_position=[Brant(0), Phoebe(-1), Zani(-1), Roccia(-2), Cartethyia(-2), Cantarella(-3)],
+            start_move_order=[4, 1, 2, 3, 5, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_a_qf1",
+            start_position=[Calcharo(), Changli(), Shorekeeper(), Camellya()],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=1000000
         )
     ]
 
