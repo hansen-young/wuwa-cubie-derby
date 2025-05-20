@@ -201,6 +201,20 @@ if __name__ == "__main__":
             track_length=24,
             num_simulations=1000000
         ),
+        MatchSetup(
+            match_name="group_b_qf1_w_order",
+            start_position=[Phoebe(), Cantarella(), Zani(), Cartethyia(),],
+            start_move_order=[3, 2, 1, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_b_qf2",
+            start_position=[Cantarella(-2), Cartethyia(-1), Zani(-1), Phoebe(0)],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=1000000
+        ),
     ]
 
     # --- Game Simulation --- #
