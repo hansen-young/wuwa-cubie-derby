@@ -124,111 +124,125 @@ if __name__ == "__main__":
     # --- Match Configuration --- #
 
     setups = [
-        # MatchSetup(
-        #     match_name="group_a_gs1",
-        #     start_position=[Jinhsi(), Calcharo(), Changli(), Shorekeeper(), Carlotta(), Camellya()],
-        #     start_move_order=[5, 4, 3, 2, 1, 0],
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_a_gs2",
-        #     start_position=[Jinhsi(0), Carlotta(-1), Calcharo(-1), Shorekeeper(-2), Camellya(-2), Changli(-3)],
-        #     start_move_order=None,
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_a_gs2_w_order",
-        #     start_position=[Jinhsi(0), Carlotta(-1), Calcharo(-1), Shorekeeper(-2), Camellya(-2), Changli(-3)],
-        #     start_move_order=[5, 1, 0, 2, 3, 4],
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_b_gs1",
-        #     start_position=[Cantarella(), Roccia(), Zani(), Cartethyia(), Phoebe(), Brant()],
-        #     start_move_order=[5, 4, 3, 2, 1, 0],
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_b_gs2",
-        #     start_position=[Brant(0), Phoebe(-1), Zani(-1), Roccia(-2), Cartethyia(-2), Cantarella(-3)],
-        #     start_move_order=None,
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_b_gs2_w_order",
-        #     start_position=[Brant(0), Phoebe(-1), Zani(-1), Roccia(-2), Cartethyia(-2), Cantarella(-3)],
-        #     start_move_order=[4, 1, 2, 3, 5, 0],
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_a_qf1",
-        #     start_position=[Calcharo(), Changli(), Shorekeeper(), Camellya()],
-        #     start_move_order=None,
-        #     track_length=24,
-        #     num_simulations=1000000
-        # ),
-        # MatchSetup(
-        #     match_name="group_a_qf1_w_order",
-        #     start_position=[Calcharo(), Changli(), Shorekeeper(), Camellya()],
-        #     start_move_order=[3, 1, 2, 0],
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_a_qf2",
-        #     start_position=[Calcharo(0), Changli(-1), Shorekeeper(-1), Camellya(-2)],
-        #     start_move_order=None,
-        #     track_length=24,
-        #     num_simulations=1000000
-        # ),
-        # MatchSetup(
-        #     match_name="group_a_qf2_w_order",
-        #     start_position=[Calcharo(0), Changli(-1), Shorekeeper(-1), Camellya(-2)],
-        #     start_move_order=[3, 1, 0, 2],
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_b_qf1",
-        #     start_position=[Phoebe(), Cartethyia(), Cantarella(), Zani()],
-        #     start_move_order=None,
-        #     track_length=24,
-        #     num_simulations=1000000
-        # ),
-        # MatchSetup(
-        #     match_name="group_b_qf1_w_order",
-        #     start_position=[Phoebe(), Cantarella(), Zani(), Cartethyia(),],
-        #     start_move_order=[3, 2, 1, 0],
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
-        # MatchSetup(
-        #     match_name="group_b_qf2",
-        #     start_position=[Cantarella(-2), Cartethyia(-1), Zani(-1), Phoebe(0)],
-        #     start_move_order=None,
-        #     track_length=24,
-        #     num_simulations=1000000
-        # ),
-        # MatchSetup(
-        #     match_name="group_b_qf2_w_order",
-        #     start_position=[Cantarella(-2), Cartethyia(-1), Zani(-1), Phoebe(0)],
-        #     start_move_order=[2, 0, 1, 3],
-        #     track_length=24,
-        #     num_simulations=500000
-        # ),
         MatchSetup(
-            match_name="f1",
+            match_name="group_a_gs1",
+            start_position=[Jinhsi(), Calcharo(), Changli(), Shorekeeper(), Carlotta(), Camellya()],
+            start_move_order=[5, 4, 3, 2, 1, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_a_gs2",
+            start_position=[Jinhsi(0), Carlotta(-1), Calcharo(-1), Shorekeeper(-2), Camellya(-2), Changli(-3)],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_a_gs2_w_order",
+            start_position=[Jinhsi(0), Carlotta(-1), Calcharo(-1), Shorekeeper(-2), Camellya(-2), Changli(-3)],
+            start_move_order=[5, 1, 0, 2, 3, 4],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_b_gs1",
+            start_position=[Cantarella(), Roccia(), Zani(), Cartethyia(), Phoebe(), Brant()],
+            start_move_order=[5, 4, 3, 2, 1, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_b_gs2",
+            start_position=[Brant(0), Phoebe(-1), Zani(-1), Roccia(-2), Cartethyia(-2), Cantarella(-3)],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_b_gs2_w_order",
+            start_position=[Brant(0), Phoebe(-1), Zani(-1), Roccia(-2), Cartethyia(-2), Cantarella(-3)],
+            start_move_order=[4, 1, 2, 3, 5, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_a_qf1",
+            start_position=[Calcharo(), Changli(), Shorekeeper(), Camellya()],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=1000000
+        ),
+        MatchSetup(
+            match_name="group_a_qf1_w_order",
+            start_position=[Calcharo(), Changli(), Shorekeeper(), Camellya()],
+            start_move_order=[3, 1, 2, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_a_qf2",
+            start_position=[Calcharo(0), Changli(-1), Shorekeeper(-1), Camellya(-2)],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=1000000
+        ),
+        MatchSetup(
+            match_name="group_a_qf2_w_order",
+            start_position=[Calcharo(0), Changli(-1), Shorekeeper(-1), Camellya(-2)],
+            start_move_order=[3, 1, 0, 2],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_b_qf1",
+            start_position=[Phoebe(), Cartethyia(), Cantarella(), Zani()],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=1000000
+        ),
+        MatchSetup(
+            match_name="group_b_qf1_w_order",
+            start_position=[Phoebe(), Cantarella(), Zani(), Cartethyia(),],
+            start_move_order=[3, 2, 1, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="group_b_qf2",
+            start_position=[Cantarella(-2), Cartethyia(-1), Zani(-1), Phoebe(0)],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=1000000
+        ),
+        MatchSetup(
+            match_name="group_b_qf2_w_order",
+            start_position=[Cantarella(-2), Cartethyia(-1), Zani(-1), Phoebe(0)],
+            start_move_order=[2, 0, 1, 3],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="final_1",
             start_position=[Shorekeeper(), Camellya(), Cartethyia(), Cantarella()],
             start_move_order=None,
             track_length=24,
             num_simulations=1000000
-        )
+        ),
+        MatchSetup(
+            match_name="final1_w_order",
+            start_position=[Cartethyia(), Shorekeeper(), Cantarella(), Camellya()],
+            start_move_order=[3, 2, 1, 0],
+            track_length=24,
+            num_simulations=500000
+        ),
+        MatchSetup(
+            match_name="final2",
+            start_position=[Cantarella(), Shorekeeper(), Camellya(), Cartethyia()],
+            start_move_order=None,
+            track_length=24,
+            num_simulations=1000000
+        ),
     ]
 
     # --- Game Simulation --- #
