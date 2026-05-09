@@ -184,6 +184,22 @@ class Changli(Cube):
             move_orders.remove(self)
             move_orders.append(self)
 
+class Denia(Cube):
+    """
+    If the number rolled matches the previous roll, this cube advances 2 extra pads.
+    """
+
+    def reset(self):
+        super().reset()
+        self.prev_roll = 0
+
+    def before_move(self, steps, move_orders, positions):
+        if steps == self.prev_roll:
+            steps += 2
+            
+        self.prev_roll = steps
+        return steps
+
 
 class Jinhsi(Cube):
     """
