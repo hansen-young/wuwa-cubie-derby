@@ -155,7 +155,7 @@ class Cartethyia(Cube):
         self.p = 0.6
 
     def before_move(self, steps, move_orders, positions):
-        if self.skill_triggered:
+        if self.skill_triggered and random.random() <= self.p:
             steps += 2
         return steps
     
@@ -163,7 +163,7 @@ class Cartethyia(Cube):
         if cube == self and not self.skill_triggered:
             ranks = compute_ranks(move_orders, positions)
 
-            if ranks[-1][2] == self and random.random() <= self.p:
+            if ranks[-1][2] == self:
                 self.skill_triggered = True
         
 
