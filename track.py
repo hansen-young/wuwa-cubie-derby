@@ -1,11 +1,18 @@
 from __future__ import annotations
+from enum import Enum, auto
 from typing import TYPE_CHECKING
+import random
 
 if TYPE_CHECKING:
     from cubes import Cube
     from race import Race
 
 # --- Pads --- #
+
+
+class PadEffectResult(Enum):
+    CONTINUE = auto()
+    STOP = auto()
 
 
 class Pad:
@@ -48,7 +55,8 @@ class ThrusterPad(Pad):
     """
 
     def on_land(self, cube: Cube, race: Race):
-        pass
+        if cube.on_pad_land(race, self) == PadEffectResult.CONTINUE:
+            race.move_cube_with_steps(cube, 1)
 
 
 class BlockerPad(Pad):
@@ -58,7 +66,8 @@ class BlockerPad(Pad):
     """
 
     def on_land(self, cube: Cube, race: Race):
-        pass
+        if cube.on_pad_land(race, self) == PadEffectResult.CONTINUE:
+            race.move_cube_with_steps(cube, -1)
 
 
 class SpatialRiftPad(Pad):
@@ -69,7 +78,7 @@ class SpatialRiftPad(Pad):
     """
 
     def on_land(self, cube: Cube, race: Race):
-        pass
+        random.shuffle(self.cubes)
 
 
 # --- Track --- #

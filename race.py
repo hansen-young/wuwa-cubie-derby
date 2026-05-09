@@ -35,12 +35,12 @@ class Race:
 
     # --- Cube Positioning --- #
 
-    def move_cube(self, cube: Cube):
-        print(f"{cube.__class__.__name__} moves {cube.steps}.")
+    def move_cube_with_steps(self, cube: Cube, steps: int):
+        print(f"{cube.__class__.__name__} moves {steps}.")
         p = cube.relative_position(self.track.length)
         i = self.track.pads[p].cubes.index(cube)
 
-        destination = min(cube.progress + cube.steps, self.max_progress)
+        destination = max(0, min(cube.progress + steps, self.max_progress))
         destination_p = destination % self.track.length
         steps = destination - cube.progress
 
@@ -52,6 +52,10 @@ class Race:
 
         self.track.pads[p].cubes = cubes_remaining
         self.track.pads[destination_p].cubes += cubes_to_move
+        self.track.pads[destination_p].on_land(cube, self)
+
+    def move_cube(self, cube: Cube):
+        self.move_cube_with_steps(cube, cube.steps)
 
     def push_cube(self, cube: Cube, position: int):
         self.track.pads[position].push(cube)

@@ -2,6 +2,8 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 import random
 
+from track import Pad, PadEffectResult
+
 if TYPE_CHECKING:
     from race import Race
 
@@ -29,7 +31,7 @@ class Cube:
 
     def roll(self):
         """Base roll value of cube before any skill is triggered"""
-        pass
+        self.steps = random.randint(1, 3)
 
     def on_turn_start(self, race: Race):
         """Trigger: At the start of each turn"""
@@ -46,6 +48,10 @@ class Cube:
     def on_turn_end(self, race: Race):
         """Trigger: At the end of each turn"""
         pass
+
+    def on_pad_land(self, race: Race, pad: Pad) -> PadEffectResult:
+        """Trigger: When current cube lands on a pad"""
+        return PadEffectResult.CONTINUE
 
 
 class Abbowser(Cube):
