@@ -48,6 +48,88 @@ class Cube:
         pass
 
 
+class Abbowser(Cube):
+    """
+    In the 3rd turn, Abbowser Cube starts moving from the finish line to the starting
+    line. Abbowser Cube does not stack with other Cubes before it starts moving. Once
+    it's moving, it is also affected by all mechanisms along the course. Abbowser Cube
+    rolls from 1-6, always ends up at the bottom of the stack. If Abbowser is separated
+    from all other Cubes at the end of each turn, it teleports back to the finish line.
+    """
+
+
+class Brant(Cube):
+    """
+    If Brant is the first to move, he advances 2 extra pads.
+    """
+
+
+class Calcharo(Cube):
+    """
+    If Calcharo is the last to move, he advances 3 extra pads.
+    """
+
+
+class Camellya(Cube):
+    """
+    There is a 50% chance of triggering this effect on Camellya's turn. For every other Cube
+    on the same pad besides Camellya, she advances 1 extra pad, while other Cubes stay in place.
+    """
+
+
+class Cantarella(Cube):
+    """
+    The first time Cantarella passes by other Cubes, she stacks with them and carries them forward.
+    This can only be triggered once per match.
+    """
+
+
+class Carlotta(Cube):
+    """
+    There is a 28% chance to advance twice with the rolled number.
+    """
+
+
+class Cartethyia(Cube):
+    """
+    If ranked last after own action, there is a 60% chance to advance 2 extra pads in all
+    remaining turns. This can only be triggered once in each match.
+    """
+
+
+class Changli(Cube):
+    """
+    If other Cubes are stacked below Changli, there is a 65% chance she will be the last to
+    move in the next turn.
+    """
+
+
+class Denia(Cube):
+    """
+    If the number rolled matches the previous roll, this Cube advances 2 extra pads.
+    """
+
+
+class Hiyuki(Cube):
+    """
+    Encountering Abbowser Cube causes this Cube to advance by 1 extra pad each turn afterward.
+    """
+
+
+class Jinhsi(Cube):
+    """
+    If other Cubes are stacked on top of Jinhsi, there is a 40% chance she will move to the
+    top of the stack.
+    """
+
+
+class Luuk(Cube):
+    """
+    Triggering the Thruster pushes this Cube forward by 2 extra pads.
+    Triggering the Blocker knocks this Cube back by 1 extra pad.
+    """
+
+
 class Phoebe(Cube):
     """
     There is a 50% chance to advance an extra pad
@@ -59,6 +141,12 @@ class Phoebe(Cube):
         self.steps += int(random.random() < self.p)
 
 
+class Roccia(Cube):
+    """
+    If Roccia is the last to move, she advances 2 extra pads.
+    """
+
+
 class Shorekeeper(Cube):
     """
     The dice will only roll 2 or 3.
@@ -66,3 +154,19 @@ class Shorekeeper(Cube):
 
     def roll(self):
         self.steps = random.randint(2, 3)
+
+
+class Sigrika(Cube):
+    """
+    Up to 2 Cubes right ahead of this Cube at the start of the turn advance
+    1 fewer pad this turn (the first roll at the start of the match only
+    determines turn order). This effect does not freeze Cubes in place or
+    make them go backwards.
+    """
+
+
+class Zani(Cube):
+    """
+    The dice will only roll a 1 or 3. When moving with other Cubes stacking
+    above, there is a 40% chance to advance 2 extra pads next turn.
+    """
