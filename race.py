@@ -37,8 +37,7 @@ class Race:
 
     def move_cube_with_steps(self, cube: Cube, steps: int):
         print(f"{cube.__class__.__name__} moves {steps}.")
-        p = cube.relative_position(self.track.length)
-        i = self.track.pads[p].cubes.index(cube)
+        p, i = self.locate_cube(cube)
 
         destination = max(0, min(cube.progress + steps, self.max_progress))
         destination_p = destination % self.track.length
@@ -83,6 +82,22 @@ class Race:
         for cube in self.track.pads[0].cubes[::-1]:
             if cube.progress == self.max_progress:
                 return cube
+
+    def locate_cube(self, cube: Cube):
+        """
+        Get the cube's current position on the track as a tuple of (pad index, stack index)
+        """
+        p = cube.relative_position(self.track.length)
+        return (p, self.track.pads[p].cubes.index(cube))
+
+    def compute_rankings(self) -> list[Cube]:
+        """
+        Get the current ranks of all cubes in the race based on their progress.
+        If multiple cubes have the same progress, the cube on the top of the stack ranks higher.
+        """
+        return sorted(
+            self.cubes, key=lambda c: (c.progress, self.locate_cube(c)[1]), reverse=True
+        )
 
     def start_turn(self):
         """

@@ -102,6 +102,23 @@ class Cartethyia(Cube):
     remaining turns. This can only be triggered once in each match.
     """
 
+    p: float = 0.6
+
+    def reset(self):
+        super().reset()
+        self.skill_triggered: bool = False
+
+    def on_before_move(self, race: Race):
+        if self.skill_triggered and random.random() < self.p:
+            self.steps += 2
+
+    def on_after_move(self, race: Race):
+        if not self.skill_triggered:
+            rankings = race.compute_rankings()
+
+            if rankings and rankings[-1] == self:
+                self.skill_triggered = True
+
 
 class Changli(Cube):
     """
