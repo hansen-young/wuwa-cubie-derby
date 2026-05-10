@@ -48,12 +48,18 @@ class Race:
 
         cubes_to_move = self.track.pads[p].cubes[i:]
         cubes_remaining = self.track.pads[p].cubes[:i]
+        cubes_at_dest = self.track.pads[destination_p].cubes.copy()
 
         for c in cubes_to_move:
             c.progress += steps
 
         self.track.pads[p].cubes = cubes_remaining
         self.track.pads[destination_p].cubes += cubes_to_move
+
+        for c_dest in cubes_at_dest:
+            for c_move in cubes_to_move:
+                c_move.on_encounter(self, c_dest)
+                c_dest.on_encounter(self, c_move)
 
     def move_cube_with_steps(self, cube: Cube, steps: int):
         print(f"{cube.__class__.__name__} moves {steps}.")

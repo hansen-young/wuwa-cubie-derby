@@ -52,7 +52,11 @@ class Cube:
         pass
 
     def on_enter_pad(self, race: Race, final_step: bool = False):
-        """Trigger: When current cube lands on a pad"""
+        """Trigger: When this cube lands on a pad"""
+        pass
+
+    def on_encounter(self, race: Race, other: Cube):
+        """Trigger: When this cube newly shares a pad with another cube during movement."""
         pass
 
 
@@ -178,6 +182,17 @@ class Hiyuki(Cube):
     """
     Encountering Abbowser Cube causes this Cube to advance by 1 extra pad each turn afterward.
     """
+
+    def reset(self):
+        super().reset()
+        self.extra_step = 0
+
+    def on_before_move(self, race: Race):
+        self.steps += self.extra_step
+
+    def on_encounter(self, race: Race, other: Cube):
+        if isinstance(other, Abbowser):
+            self.extra_step += 1
 
 
 class Jinhsi(Cube):
