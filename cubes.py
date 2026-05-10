@@ -236,6 +236,10 @@ class Roccia(Cube):
     If Roccia is the last to move, she advances 2 extra pads.
     """
 
+    def on_turn_start(self, race: Race):
+        if race.cubes_order_this_turn[-1] == self:
+            self.steps += 2
+
 
 class Shorekeeper(Cube):
     """
