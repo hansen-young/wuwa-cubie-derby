@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 import random
 
-from track import BlockerPad, Pad, PadEffectResult, ThrusterPad
+from track import BlockerPad, Pad, ThrusterPad
 
 if TYPE_CHECKING:
     from race import Race
@@ -49,9 +49,9 @@ class Cube:
         """Trigger: At the end of each turn"""
         pass
 
-    def on_pad_land(self, race: Race, pad: Pad) -> PadEffectResult:
+    def on_enter_pad(self, race: Race, final_step: bool = False):
         """Trigger: When current cube lands on a pad"""
-        return PadEffectResult.CONTINUE
+        pass
 
 
 class Abbowser(Cube):
@@ -161,16 +161,16 @@ class Luuk(Cube):
     Triggering the Blocker knocks this Cube back by 1 extra pad.
     """
 
-    def on_pad_land(self, race: Race, pad: Pad) -> PadEffectResult:
-        if isinstance(pad, ThrusterPad):
-            race.move_cube_with_steps(self, 4)
-            return PadEffectResult.STOP
+    def on_enter_pad(self, race: Race, final_step: bool = False):
+        if final_step:
+            p = race.locate_cube(self)[0]
+            pad = race.track.pads[p]
 
-        elif isinstance(pad, BlockerPad):
-            race.move_cube_with_steps(self, -2)
-            return PadEffectResult.STOP
+            if isinstance(pad, ThrusterPad):
+                race.move_cube_with_steps(self, 4)
 
-        return PadEffectResult.CONTINUE
+            elif isinstance(pad, BlockerPad):
+                race.move_cube_with_steps(self, -2)
 
 
 class Phoebe(Cube):
