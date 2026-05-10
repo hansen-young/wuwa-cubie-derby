@@ -76,7 +76,18 @@ class Race:
 
     def push_cube(self, cube: Cube, position: int):
         self._ranking_cache = None
-        self.track.pads[position].push(cube)
+        self.track.pads[position % self.track.length].cubes.append(cube)
+        cube.progress = position
+
+    def remove_cube(self, cube: Cube, position: int):
+        self._ranking_cache = None
+        self.track.pads[position % self.track.length].cubes.remove(cube)
+        cube.progress = 0
+
+    def insert_cube(self, cube: Cube, position: int, index: int):
+        self._ranking_cache = None
+        self.track.pads[position % self.track.length].cubes.insert(index, cube)
+        cube.progress = position
 
     # --- Race Logic --- #
 
@@ -99,7 +110,7 @@ class Race:
         """
 
         for cube in self.track.pads[0].cubes[::-1]:
-            if cube.progress == self.max_progress:
+            if cube.rankable and cube.progress == self.max_progress:
                 return cube
 
     def locate_cube(self, cube: Cube):
@@ -116,7 +127,7 @@ class Race:
         """
         if self._ranking_cache is None:
             self._ranking_cache = sorted(
-                self.cubes,
+                [c for c in self.cubes if c.rankable],
                 key=lambda c: (c.progress, self.locate_cube(c)[1]),
                 reverse=True,
             )

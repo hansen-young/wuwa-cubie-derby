@@ -21,14 +21,6 @@ class Pad:
         """Remove all cubes from this pad"""
         self.cubes.clear()
 
-    def push(self, cube: Cube):
-        """Add a cube to this pad"""
-        self.cubes.append(cube)
-
-    def pop(self):
-        """Remove the top cube from this pad. Raises an error if the pad is empty."""
-        self.cubes.pop()
-
     def on_turn_start(self, race: Race):
         """Trigger: At the start of each turn"""
         pass

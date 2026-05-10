@@ -16,6 +16,8 @@ class Cube:
         progress: Total number of steps the cube has moved from the track's starting line.
     """
 
+    rankable: bool = True
+
     def __init__(self, offset: int = 0):
         self.offset: int = offset
         self.steps: int = 0
@@ -62,6 +64,36 @@ class Abbowser(Cube):
     rolls from 1-6, always ends up at the bottom of the stack. If Abbowser is separated
     from all other Cubes at the end of each turn, it teleports back to the finish line.
     """
+
+    rankable: bool = False
+
+    def roll(self):
+        self.steps = -random.randint(1, 6)
+
+    def on_turn_start(self, race: Race):
+        if race.turn < 3:
+            self.steps = 0
+
+    def on_enter_pad(self, race: Race, final_step: bool = False):
+        p, i = race.locate_cube(self)
+        race.track.pads[p].cubes.pop(i)
+        race.track.pads[p].cubes.insert(0, self)
+
+    def on_turn_end(self, race: Race):
+        p, i = race.locate_cube(self)
+
+        if len(race.track.pads[p].cubes) > 1:
+            return
+
+        relative_rankings = sorted(
+            race.cubes,
+            key=lambda c: c.relative_position(race.track.length),
+            reverse=True,
+        )
+
+        if relative_rankings[-1] == self:
+            race.remove_cube(self, p)
+            race.insert_cube(self, self.offset, 0)
 
 
 class Brant(Cube):
