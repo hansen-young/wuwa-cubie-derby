@@ -14,6 +14,8 @@ class Race:
         self.cubes_order_next_turn: list[Cube]
         self.cubes_order_this_turn: list[Cube]
         self.max_progress: int
+
+        self._ranking_cache: list[Cube] | None = None
         self.reset()
 
     def __repr__(self):
@@ -37,6 +39,7 @@ class Race:
 
     def move_cube_with_steps(self, cube: Cube, steps: int):
         print(f"{cube.__class__.__name__} moves {steps}.")
+        self._ranking_cache = None
         p, i = self.locate_cube(cube)
 
         destination = max(0, min(cube.progress + steps, self.max_progress))
@@ -57,6 +60,7 @@ class Race:
         self.move_cube_with_steps(cube, cube.steps)
 
     def push_cube(self, cube: Cube, position: int):
+        self._ranking_cache = None
         self.track.pads[position].push(cube)
 
     # --- Race Logic --- #
@@ -95,9 +99,13 @@ class Race:
         Get the current ranks of all cubes in the race based on their progress.
         If multiple cubes have the same progress, the cube on the top of the stack ranks higher.
         """
-        return sorted(
-            self.cubes, key=lambda c: (c.progress, self.locate_cube(c)[1]), reverse=True
-        )
+        if self._ranking_cache is None:
+            self._ranking_cache = sorted(
+                self.cubes,
+                key=lambda c: (c.progress, self.locate_cube(c)[1]),
+                reverse=True,
+            )
+        return self._ranking_cache
 
     def start_turn(self):
         """

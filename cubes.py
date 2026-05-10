@@ -196,6 +196,14 @@ class Sigrika(Cube):
     make them go backwards.
     """
 
+    def on_turn_start(self, race: Race):
+        # nb: "right ahead" is ambiguous, we assume it is by progress not by relative position.
+        rankings = race.compute_rankings()
+        i = rankings.index(self)
+
+        for c in rankings[max(0, i - 2) : i]:
+            c.steps = max(1, c.steps - 1)
+
 
 class Zani(Cube):
     """
