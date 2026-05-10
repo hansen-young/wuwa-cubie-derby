@@ -62,7 +62,7 @@ class Race:
                 c_dest.on_encounter(self, c_move)
 
     def move_cube_with_steps(self, cube: Cube, steps: int):
-        print(f"{cube.__class__.__name__} moves {steps}.")
+        # print(f"{cube.__class__.__name__} moves {steps}.")
 
         while steps > 0:
             self.move_cube_single_step_intermediate(cube, forward=True)

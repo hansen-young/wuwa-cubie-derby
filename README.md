@@ -13,5 +13,5 @@ This repository is used for simulating the cubes in Wuthering Wave Cubie Derby e
 
 3.  Run `game.py`
     ```bash
-    python game.py
+    python main.py
     ```
