@@ -2,7 +2,7 @@ from __future__ import annotations
 from typing import TYPE_CHECKING
 import random
 
-from track import Pad, PadEffectResult
+from track import BlockerPad, Pad, PadEffectResult, ThrusterPad
 
 if TYPE_CHECKING:
     from race import Race
@@ -157,9 +157,20 @@ class Jinhsi(Cube):
 
 class Luuk(Cube):
     """
-    Triggering the Thruster pushes this Cube forward by 2 extra pads.
+    Triggering the Thruster pushes this Cube forward by 3 extra pads.
     Triggering the Blocker knocks this Cube back by 1 extra pad.
     """
+
+    def on_pad_land(self, race: Race, pad: Pad) -> PadEffectResult:
+        if isinstance(pad, ThrusterPad):
+            race.move_cube_with_steps(self, 4)
+            return PadEffectResult.STOP
+
+        elif isinstance(pad, BlockerPad):
+            race.move_cube_with_steps(self, -2)
+            return PadEffectResult.STOP
+
+        return PadEffectResult.CONTINUE
 
 
 class Phoebe(Cube):
