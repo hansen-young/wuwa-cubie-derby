@@ -115,6 +115,15 @@ class Denia(Cube):
     If the number rolled matches the previous roll, this Cube advances 2 extra pads.
     """
 
+    def reset(self):
+        super().reset()
+        self.prev_roll: int = -1
+
+    def on_before_move(self, race: Race):
+        extras = 2 if self.steps == self.prev_roll else 0
+        self.prev_roll = self.steps
+        self.steps += extras
+
 
 class Hiyuki(Cube):
     """
