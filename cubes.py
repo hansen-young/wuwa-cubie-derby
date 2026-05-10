@@ -131,6 +131,12 @@ class Carlotta(Cube):
     There is a 28% chance to advance twice with the rolled number.
     """
 
+    p: float = 0.28
+
+    def on_before_move(self, race: Race):
+        if random.random() < self.p:
+            self.steps *= 2
+
 
 class Cartethyia(Cube):
     """
