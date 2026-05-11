@@ -110,8 +110,15 @@ class Aemeath(Cube):
     Cube (if that Cube is not Abbowser). This can be triggered only once per match.
     """
 
+    def reset(self):
+        super().reset()
+        self.skill_triggered: bool = False
+
     # nb: CN translation "if there is non-Abbowser Cube in front of it"
     def on_turn_end(self, race: Race):
+        if self.skill_triggered:
+            return
+
         p = self.relative_position(race.track.length)
 
         if p > race.track.length / 2 - 1:
@@ -122,6 +129,7 @@ class Aemeath(Cube):
                 if not isinstance(rankings[o], Abbowser):
                     race.remove_cube(self, p)
                     race.push_cube(self, rankings[o].progress)
+                    self.skill_triggered = True
                     break
 
 
