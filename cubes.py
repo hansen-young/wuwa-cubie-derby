@@ -20,6 +20,7 @@ class Cube:
 
     def __init__(self, offset: int = 0):
         self.offset: int = offset
+        self.base_roll: int = 0
         self.steps: int = 0
         self.progress: int = 0
 
@@ -33,7 +34,8 @@ class Cube:
 
     def roll(self):
         """Base roll value of cube before any skill is triggered"""
-        self.steps = random.randint(1, 3)
+        self.base_roll = random.randint(1, 3)
+        self.steps = self.base_roll
 
     def on_turn_start(self, race: Race):
         """Trigger: At the start of each turn"""
@@ -72,7 +74,8 @@ class Abbowser(Cube):
     rankable: bool = False
 
     def roll(self):
-        self.steps = -random.randint(1, 6)
+        self.base_roll = -random.randint(1, 6)
+        self.steps = self.base_roll
 
     def on_turn_start(self, race: Race):
         if race.turn < 3:
@@ -169,6 +172,19 @@ class Changli(Cube):
     """
 
 
+class Chisa(Cube):
+    """
+    If this turn's roll is the lowest among all Cubes, this Cube advances 2 extra pads.
+    """
+
+    def on_turn_start(self, race: Race):
+        # nb: CN translation "if roll is one of the smallest value in this round"
+        lowest = min(c.base_roll for c in race.cubes)
+
+        if self.base_roll == lowest:
+            self.steps += 2
+
+
 class Denia(Cube):
     """
     If the number rolled matches the previous roll, this Cube advances 2 extra pads.
@@ -253,7 +269,8 @@ class Shorekeeper(Cube):
     """
 
     def roll(self):
-        self.steps = random.randint(2, 3)
+        self.base_roll = random.randint(2, 3)
+        self.steps = self.base_roll
 
 
 class Sigrika(Cube):
