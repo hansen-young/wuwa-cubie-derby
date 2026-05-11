@@ -104,6 +104,27 @@ class Abbowser(Cube):
             race.insert_cube(self, self.offset, 0)
 
 
+class Aemeath(Cube):
+    """
+    When this Cube reaches the course's midpoint, it teleports on top of the closest
+    Cube (if that Cube is not Abbowser). This can be triggered only once per match.
+    """
+
+    # nb: CN translation "if there is non-Abbowser Cube in front of it"
+    def on_turn_end(self, race: Race):
+        p = self.relative_position(race.track.length)
+
+        if p > race.track.length / 2 - 1:
+            rankings = race.compute_rankings()
+            i = rankings.index(self)
+
+            for o in range(i - 1, -1, -1):
+                if not isinstance(rankings[o], Abbowser):
+                    race.remove_cube(self, p)
+                    race.push_cube(self, rankings[o].progress)
+                    break
+
+
 class Brant(Cube):
     """
     If Brant is the first to move, he advances 2 extra pads.
