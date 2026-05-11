@@ -23,13 +23,13 @@ if __name__ == "__main__":
         ],
     )
     cubes: list[Cube] = [
+        Aemeath(-3),
+        Mornye(-2),
+        Lynae(-2),
+        Shorekeeper(-1),
+        Chisa(-1),
         Abbowser(track.length * laps),
-        Chisa(1),
-        Mornye(1),
-        Lynae(1),
-        Aemeath(1),
-        Shorekeeper(1),
-        Carlotta(1),
+        Carlotta(0),
     ]
     race = Race(track, cubes, laps)
 
