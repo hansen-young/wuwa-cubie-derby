@@ -242,6 +242,22 @@ class Luuk(Cube):
                 race.move_cube_with_steps(self, -2)
 
 
+class Lynae(Cube):
+    """
+    For each turn, there is a 60% chance to advance by a doubled number,
+    but also a 20% chance to stay still.
+    """
+
+    p_double: float = 0.6
+    p_stop: float = 0.2
+
+    def on_turn_start(self, race: Race):
+        if random.random() < self.p_double:
+            self.steps *= 2
+        elif random.random() < self.p_double + self.p_stop:
+            self.steps = 0
+
+
 class Phoebe(Cube):
     """
     There is a 50% chance to advance an extra pad
