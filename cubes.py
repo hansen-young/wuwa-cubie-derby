@@ -1,5 +1,6 @@
 from __future__ import annotations
 from typing import TYPE_CHECKING
+import itertools
 import random
 
 from track import BlockerPad, Pad, ThrusterPad
@@ -256,6 +257,22 @@ class Lynae(Cube):
             self.steps *= 2
         elif random.random() < self.p_double + self.p_stop:
             self.steps = 0
+
+
+class Mornye(Cube):
+    """
+    The dice is set to roll 3, 2, and 1 in succession.
+    """
+
+    def reset(self):
+        super().reset()
+        self.dice_generator = itertools.cycle([1, 2, 3])
+
+    def roll(self):
+        # nb: we assume dice roll for deciding move order consumes the generator
+        #     3 (roll) -> 1 (move order) -> 2 (roll) -> 3 (move order) -> 1 (roll)
+        self.base_roll = next(self.dice_generator)
+        self.steps = self.base_roll
 
 
 class Phoebe(Cube):
