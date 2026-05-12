@@ -222,6 +222,15 @@ class Changli(Cube):
     move in the next turn.
     """
 
+    p: float = 0.65
+
+    def on_turn_end(self, race: Race):
+        p, i = race.locate_cube(self)
+
+        if i != 0 and random.random() < self.p:
+            race.cubes_order_next_turn.remove(self)
+            race.cubes_order_next_turn.append(self)
+
 
 class Chisa(Cube):
     """
