@@ -141,8 +141,14 @@ class Brant(Cube):
 
 class Calcharo(Cube):
     """
-    If Calcharo is the last to move, he advances 3 extra pads.
+    If Calcharo is in last place when he starts moving, he advances 3 extra pads.
     """
+
+    def on_before_move(self, race: Race):
+        rankings = race.compute_rankings()
+
+        if rankings[-1] == self:
+            self.steps += 3
 
 
 class Camellya(Cube):
