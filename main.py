@@ -23,13 +23,13 @@ if __name__ == "__main__":
         ],
     )
     cubes: list[Cube] = [
-        Aemeath(-3),
-        Mornye(-2),
-        Lynae(-2),
-        Shorekeeper(-1),
-        Chisa(-1),
         Abbowser(track.length * laps),
-        Carlotta(0),
+        Augusta(1),
+        Iuno(1),
+        Phrolova(1),
+        Changli(1),
+        Jinhsi(1),
+        Calcharo(1),
     ]
     race = Race(track, cubes, laps)
 
@@ -38,6 +38,7 @@ if __name__ == "__main__":
     rank_history = {cube.__class__.__name__: [] for cube in cubes}
 
     for i in tqdm(range(num_simulation)):
+        random.shuffle(race.cubes)
         race.reset()
         race.start()
 
