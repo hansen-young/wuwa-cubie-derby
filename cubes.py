@@ -277,6 +277,48 @@ class Hiyuki(Cube):
             self.extra_step += 1
 
 
+class Iuno(Cube):
+    """
+    When this Cube passes through the midpoint, teleport all non-Abbowser Cubes ahead and
+    behind to its pad. The Cubes are stacked based on their previous positions. This
+    effect can only be triggered once per match.
+
+    每场比赛一次，当该团子经过塞程中点后，若该团子排名前后有其他非布大王团子，则将这些团子传送至自己的格子。
+    这些团子的堆叠顺序将与传前的排名顺序一致
+    """
+
+    def reset(self):
+        super().reset()
+        self.skill_triggered: bool = False
+
+    def on_after_move(self, race: Race):
+        if self.skill_triggered:
+            return
+
+        p = self.relative_position(race.track.length)
+
+        if p >= race.track.length / 2 - 1:
+            rankings = race.compute_rankings()
+            race.track.pads[p].cubes = []
+
+            # nb: if abbowser is in the same pad, keep it at the very bottom
+            for cube in rankings[::-1]:
+                if isinstance(cube, Abbowser):
+                    if cube.relative_position(race.track.length) == p:
+                        race.push_cube(cube, self.progress)
+
+            # nb: push non-abbowser cubes to the stack based on rankings
+            for cube in rankings[::-1]:
+                if isinstance(cube, Abbowser):
+                    continue
+
+                if cube.relative_position(race.track.length) != p:
+                    race.remove_cube(cube, cube.progress)
+                race.push_cube(cube, self.progress)
+
+            self.skill_triggered = True
+
+
 class Jinhsi(Cube):
     """
     If other Cubes are stacked on top of Jinhsi, there is a 40% chance she will move to the
