@@ -133,6 +133,21 @@ class Aemeath(Cube):
                     break
 
 
+class Augusta(Cube):
+    """
+    When at the top of a stack at the start of the turn, this Cube stays still this
+    turn and becomes the last to move next turn.
+    """
+
+    def on_turn_start(self, race: Race):
+        p = self.relative_position(race.track.length)
+
+        if race.track.pads[p].cubes[-1] == self:
+            self.steps = 0
+            race.cubes_order_next_turn.remove(self)
+            race.cubes_order_next_turn.append(self)
+
+
 class Brant(Cube):
     """
     If Brant is the first to move, he advances 2 extra pads.
