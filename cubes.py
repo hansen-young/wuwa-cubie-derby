@@ -253,6 +253,18 @@ class Jinhsi(Cube):
     top of the stack.
     """
 
+    p: float = 0.4
+
+    def on_before_move(self, race: Race):
+        # nb: trigger is unclear whether on_encounter / on_turn_start / on_before_move
+        p, i = race.locate_cube(self)
+
+        if race.track.pads[p].cubes[-1] != self:
+            if random.random() < self.p:
+                race._ranking_cache = None
+                race.track.pads[p].cubes.pop(i)
+                race.track.pads[p].cubes.append(self)
+
 
 class Luuk(Cube):
     """
