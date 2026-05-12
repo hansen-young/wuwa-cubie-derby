@@ -115,13 +115,13 @@ class Aemeath(Cube):
         self.skill_triggered: bool = False
 
     # nb: CN translation "if there is non-Abbowser Cube in front of it"
-    def on_turn_end(self, race: Race):
+    def on_after_move(self, race: Race):
         if self.skill_triggered:
             return
 
         p = self.relative_position(race.track.length)
 
-        if p > race.track.length / 2 - 1:
+        if p >= race.track.length / 2 - 1:
             rankings = race.compute_rankings()
             i = rankings.index(self)
 
