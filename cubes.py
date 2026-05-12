@@ -407,7 +407,7 @@ class Phrolova(Cube):
     def on_turn_start(self, race: Race):
         p, i = race.locate_cube(self)
 
-        if i == 0:
+        if i == 0 and len(race.track.pads[p].cubes) > 1:
             self.steps += 3
 
 
