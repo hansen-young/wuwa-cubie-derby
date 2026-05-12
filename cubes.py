@@ -327,6 +327,18 @@ class Phoebe(Cube):
         self.steps += int(random.random() < self.p)
 
 
+class Phrolova(Cube):
+    """
+    When stacked at the bottom at the start of the turn, this Cube advances 3 pad.
+    """
+
+    def on_turn_start(self, race: Race):
+        p, i = race.locate_cube(self)
+
+        if i == 0:
+            self.steps += 3
+
+
 class Roccia(Cube):
     """
     If Roccia is the last to move, she advances 2 extra pads.
