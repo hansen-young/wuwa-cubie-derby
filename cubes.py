@@ -302,7 +302,7 @@ class Iuno(Cube):
             race.track.pads[p].cubes = []
 
             # nb: if abbowser is in the same pad, keep it at the very bottom
-            for cube in rankings[::-1]:
+            for cube in race.cubes:
                 if isinstance(cube, Abbowser):
                     if cube.relative_position(race.track.length) == p:
                         race.push_cube(cube, self.progress)
