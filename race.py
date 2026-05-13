@@ -37,7 +37,7 @@ class Race:
 
     # --- Cube Positioning --- #
 
-    def move_cube_single_step_intermediate(self, cube: Cube, forward: bool = True):
+    def move_cube_one_step(self, cube: Cube, forward: bool = True):
         self._ranking_cache = None
         p, i = self.locate_cube(cube)
 
@@ -61,24 +61,30 @@ class Race:
                 c_move.on_encounter(self, c_dest)
                 c_dest.on_encounter(self, c_move)
 
+        return self.find_winner()
+
     def move_cube_with_steps(self, cube: Cube, steps: int):
         # print(f"{cube.__class__.__name__} moves {steps}.")
 
         while steps > 0:
-            self.move_cube_single_step_intermediate(cube, forward=True)
+            if winner := self.move_cube_one_step(cube, forward=True):
+                return winner
             cube.on_enter_pad(self, final_step=steps == 1)
             steps -= 1
 
         while steps < 0:
-            self.move_cube_single_step_intermediate(cube, forward=False)
+            if winner := self.move_cube_one_step(cube, forward=False):
+                return winner
             cube.on_enter_pad(self, final_step=steps == -1)
             steps += 1
 
         p, i = self.locate_cube(cube)
         self.track.pads[p].on_land(cube, self)
 
+        return self.find_winner()
+
     def move_cube(self, cube: Cube):
-        self.move_cube_with_steps(cube, cube.steps)
+        return self.move_cube_with_steps(cube, cube.steps)
 
     def push_cube(self, cube: Cube, position: int):
         self._ranking_cache = None
@@ -163,11 +169,9 @@ class Race:
 
         for cube in self.cubes_order_this_turn:
             cube.on_before_move(self)
-            self.move_cube(cube)
-            cube.on_after_move(self)
-
-            if winner := self.find_winner():
+            if winner := self.move_cube(cube):
                 return winner
+            cube.on_after_move(self)
 
         for cube in self.cubes_order_this_turn:
             cube.on_turn_end(self)
