@@ -327,8 +327,9 @@ class Jinhsi(Cube):
 
     p: float = 0.4
 
-    def on_before_move(self, race: Race):
-        # nb: trigger is unclear whether on_encounter / on_turn_start / on_before_move
+    def on_turn_end(self, race: Race):
+        # nb: on_turn_end is not accurate, but this is the closest hook currently implemented.
+        #     when other cube final step lands on the same pad, this skill can also trigger.
         p, i = race.locate_cube(self)
 
         if race.track.pads[p].cubes[-1] != self:
