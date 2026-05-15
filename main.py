@@ -12,24 +12,25 @@ if __name__ == "__main__":
     track = Track.create(
         length=32,
         custom_pads=[
-            ThrusterPad(3),
+            ThrusterPad(4),
             SpatialRiftPad(6),
-            BlockerPad(10),
-            ThrusterPad(11),
-            ThrusterPad(16),
-            SpatialRiftPad(20),
-            ThrusterPad(23),
-            BlockerPad(28),
+            ThrusterPad(10),
+            SpatialRiftPad(14),
+            BlockerPad(16),
+            ThrusterPad(20),
+            SpatialRiftPad(23),
+            BlockerPad(26),
+            BlockerPad(30),
         ],
     )
     cubes: list[Cube] = [
         Abbowser(track.length * laps),
-        Sigrika(1),
-        Luuk(1),
-        Lynae(1),
-        Carlotta(1),
-        Iuno(1),
-        Changli(1),
+        Chisa(1),
+        Shorekeeper(1),
+        Jinhsi(1),
+        Phrolova(1),
+        Aemeath(1),
+        Hiyuki(1),
     ]
     race = Race(track, cubes, laps)
 
